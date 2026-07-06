@@ -9,3 +9,7 @@
 /vendor/
 /api/vendor
 ###< symfony/framework-bundle ###
+
+###> app cache/logs ###
+/api/var/
+###< app cache/logs ###
