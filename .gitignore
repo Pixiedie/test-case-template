@@ -13,3 +13,5 @@
 ###> app cache/logs ###
 /api/var/
 ###< app cache/logs ###
+
+app/.vscode/
