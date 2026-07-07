@@ -5,6 +5,8 @@
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "paths": {
+      "@ui/*": ["./src/app/ui/*"],
+      "@pages/*": ["./src/app/pages/*"],
       "@testing/*": ["./src/testing/*"]
     },
     "strict": true,

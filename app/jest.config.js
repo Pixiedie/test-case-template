@@ -6,6 +6,8 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
   testMatch: ['<rootDir>/src/**/*.test.ts', '<rootDir>/src/**/*.spec.ts'],
   moduleNameMapper: {
+    '^@ui/(.*)$': '<rootDir>/src/app/ui/$1',
+    '^@pages/(.*)$': '<rootDir>/src/app/pages/$1',
     '^@testing/(.*)$': '<rootDir>/src/testing/$1',
   },
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
