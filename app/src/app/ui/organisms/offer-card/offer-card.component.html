@@ -1,0 +1,30 @@
+<app-card
+  [variant]="recommended() ? CardVariantEnum.HIGHLIGHTED : CardVariantEnum.DEFAULT"
+>
+  <div class="offer-card">
+    @if (recommended()) {
+      <app-tag
+        class="offer-card__badge"
+        [label]="recommendedLabel"
+        [variant]="TagVariantEnum.PRIMARY"
+      />
+    }
+
+    <app-tag [label]="tagLabel()" [variant]="TagVariantEnum.SECONDARY" />
+
+    <h3 app-heading>{{ title() }}</h3>
+
+    <app-detailed-offer-list [lines]="lines()" />
+
+    <div class="offer-card__footer">
+      <p class="offer-card__price">
+        <span class="offer-card__price-label">{{ priceLabel() }}</span>
+        <span class="offer-card__price-value">
+          {{ price() }} €<span class="offer-card__price-period"> {{ pricePeriod() }}</span>
+        </span>
+      </p>
+
+      <button app-button (click)="offerSelect.emit()">{{ ctaLabel() }}</button>
+    </div>
+  </div>
+</app-card>

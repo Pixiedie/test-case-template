@@ -10,8 +10,12 @@ export type DetailedOfferLineProps = {
   imports: [],
   templateUrl: './detailed-offer-line.component.html',
   styleUrl: './detailed-offer-line.component.scss',
+  host: {
+    '[class.detailed-offer-line--divider]': 'divider()',
+  },
 })
 export class DetailedOfferLineComponent {
   label = input.required<DetailedOfferLineProps['label']>();
   value = input.required<DetailedOfferLineProps['value']>();
+  divider = input<boolean>(false);
 }
