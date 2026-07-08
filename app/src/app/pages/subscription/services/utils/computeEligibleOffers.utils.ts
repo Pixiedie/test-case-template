@@ -47,10 +47,14 @@ export const matchesLocation = (
 const BEST_FIT_COUNT = 3;
 const UPSELL_COUNT = 2;
 
+// A missing cap means unlimited capital, i.e. the highest possible tier.
+const capitalOf = (maxTurnover: number | null): number =>
+	maxTurnover ?? Number.POSITIVE_INFINITY;
+
 export const hasSuperiorCapital = (
 	maxTurnover: number | null,
-	turnoverAmount: number,
-): boolean => maxTurnover === null || maxTurnover > turnoverAmount;
+	threshold: number,
+): boolean => capitalOf(maxTurnover) > threshold;
 
 export const computeEligibleOffers = (
 	criteria: EligibilityCriteria,
@@ -66,14 +70,22 @@ export const computeEligibleOffers = (
 		)
 		.sort((a, b) => a.premium - b.premium);
 
-	const bestFitProducts = eligibleProducts.slice(0, BEST_FIT_COUNT);
+	if (eligibleProducts.length === 0) {
+		return [];
+	}
 
+	// Best fit = tightest capital that still covers the requested turnover.
+	const bestFitCapital = Math.min(
+		...eligibleProducts.map((product) => capitalOf(product.maxTurnover)),
+	);
+
+	const bestFitProducts = eligibleProducts
+		.filter((product) => capitalOf(product.maxTurnover) === bestFitCapital)
+		.slice(0, BEST_FIT_COUNT);
+
+	// Upsell = cheapest offers whose capital is a tier above the best fit.
 	const upsellProducts = eligibleProducts
-		.filter(
-			(product) =>
-				!bestFitProducts.includes(product) &&
-				hasSuperiorCapital(product.maxTurnover, criteria.turnoverAmount),
-		)
+		.filter((product) => hasSuperiorCapital(product.maxTurnover, bestFitCapital))
 		.slice(0, UPSELL_COUNT);
 
 	return [

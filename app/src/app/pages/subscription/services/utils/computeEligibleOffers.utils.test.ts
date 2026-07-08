@@ -137,7 +137,7 @@ describe('src/app/pages/subscription/services/utils/computeEligibleOffers.utils'
   });
 
   describe('computeEligibleOffers', () => {
-    it('When a French SARL sociologist earns 500k then ranks the 3 cheapest plus 2 superior-capital upsells', () => {
+    it('When a French SARL sociologist earns 500k then best fit is the exact-cap tier and higher tiers are upsells', () => {
       const criteria: EligibilityCriteria = {
         activityId: 'sociologist',
         legalFormId: LegalFormEnum.SARL,
@@ -148,9 +148,8 @@ describe('src/app/pages/subscription/services/utils/computeEligibleOffers.utils'
       expect(summarize(computeEligibleOffers(criteria, PRODUCTS))).toEqual([
         { id: 'axa-rainboots', recommendation: OfferRecommendationEnum.BEST_FIT },
         { id: 'hiscox-avantage-plus', recommendation: OfferRecommendationEnum.BEST_FIT },
-        { id: 'axa-raincoat', recommendation: OfferRecommendationEnum.BEST_FIT },
+        { id: 'axa-raincoat', recommendation: OfferRecommendationEnum.UPSELL },
         { id: 'hiscox-avantage-premium', recommendation: OfferRecommendationEnum.UPSELL },
-        { id: 'axa-waterproof-1-5m', recommendation: OfferRecommendationEnum.UPSELL },
       ]);
     });
 
@@ -163,12 +162,12 @@ describe('src/app/pages/subscription/services/utils/computeEligibleOffers.utils'
       };
 
       expect(summarize(computeEligibleOffers(criteria, PRODUCTS))).toEqual([
-        { id: 'hiscox-avantage-premium', recommendation: OfferRecommendationEnum.BEST_FIT },
         { id: 'axa-waterproof-1-5m', recommendation: OfferRecommendationEnum.BEST_FIT },
+        { id: 'hiscox-avantage-premium', recommendation: OfferRecommendationEnum.UPSELL },
       ]);
     });
 
-    it('When an auto-entrepreneur matches WAKAM then WAKAM is among the best offers', () => {
+    it('When an auto-entrepreneur earns 150k then exact-cap offers are best fit and WAKAM unlimited cap is an upsell', () => {
       const criteria: EligibilityCriteria = {
         activityId: 'art-objects-trade',
         legalFormId: LegalFormEnum.AUTO_ENTREPRENEUR,
@@ -178,10 +177,9 @@ describe('src/app/pages/subscription/services/utils/computeEligibleOffers.utils'
 
       expect(summarize(computeEligibleOffers(criteria, PRODUCTS))).toEqual([
         { id: 'axa-starter', recommendation: OfferRecommendationEnum.BEST_FIT },
-        { id: 'wakam-self-employed-standard', recommendation: OfferRecommendationEnum.BEST_FIT },
         { id: 'hiscox-avantage', recommendation: OfferRecommendationEnum.BEST_FIT },
+        { id: 'wakam-self-employed-standard', recommendation: OfferRecommendationEnum.UPSELL },
         { id: 'axa-rainboots', recommendation: OfferRecommendationEnum.UPSELL },
-        { id: 'hiscox-avantage-plus', recommendation: OfferRecommendationEnum.UPSELL },
       ]);
     });
 
