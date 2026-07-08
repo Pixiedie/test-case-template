@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-text);
+}
+
+:host(h1) {
+  font-size: var(--font-size-3xl);
+}
+
+:host(h2) {
+  font-size: var(--font-size-2xl);
+}
+
+:host(h3) {
+  font-size: var(--font-size-xl);
+}
