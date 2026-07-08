@@ -1,8 +1,9 @@
 <div class="select">
   <select
     class="select__control"
+    [class.select__control--placeholder]="!value()"
     [attr.id]="id()"
-    [value]="value()"
+    [value]="value() ?? ''"
     [disabled]="disabled()"
     (change)="select($any($event.target).value)"
     (blur)="markTouched()"

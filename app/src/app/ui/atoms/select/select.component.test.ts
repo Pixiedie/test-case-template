@@ -17,6 +17,14 @@ describe('src/app/ui/atoms/select/select.component', () => {
     expect(screen.getByText('Option A')).toBeTruthy();
   });
 
+  it('When no value is set then stays on the placeholder', async () => {
+    await renderWithProviders(SelectComponent, {
+      inputs: { options: OPTIONS, placeholder: 'Choisir' },
+    });
+
+    expect((screen.getByRole('combobox') as HTMLSelectElement).value).toBe('');
+  });
+
   it('When the form pushes a value then the select reflects it', async () => {
     const { fixture } = await renderWithProviders(SelectComponent, {
       inputs: { options: OPTIONS, placeholder: 'Choisir' },
@@ -39,6 +47,18 @@ describe('src/app/ui/atoms/select/select.component', () => {
 
     expect(onChange).toHaveBeenCalledWith('a');
     expect(fixture.componentInstance.value()).toBe('a');
+  });
+
+  it('When the user selects an option then emits selectionChange', async () => {
+    const onSelection = jest.fn();
+    await renderWithProviders(SelectComponent, {
+      inputs: { options: OPTIONS, placeholder: 'Choisir' },
+      on: { selectionChange: onSelection },
+    });
+
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'b' } });
+
+    expect(onSelection).toHaveBeenCalledWith('b');
   });
 
   it('When the disabled state is set then the select is disabled', async () => {

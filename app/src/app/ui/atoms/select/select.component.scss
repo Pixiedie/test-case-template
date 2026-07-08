@@ -41,6 +41,10 @@
   opacity: 0.5;
 }
 
+.select__control--placeholder {
+  color: var(--color-text-muted);
+}
+
 .select__control.is-error {
   border-color: var(--color-error);
 }

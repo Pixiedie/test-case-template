@@ -16,6 +16,10 @@
     border-color var(--transition-base),
     box-shadow var(--transition-base);
 
+  &::placeholder {
+    color: var(--color-text-muted);
+  }
+
   &:hover {
     border-color: var(--color-border-strong);
   }

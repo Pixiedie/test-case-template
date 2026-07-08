@@ -8,7 +8,10 @@ const OPTIONS: SelectOptionsType[] = [
   { value: 'b', label: 'Option B' },
 ];
 
-const renderComponent = (control = new FormControl('', { nonNullable: true })) =>
+const renderComponent = (
+  control = new FormControl<string | undefined>(undefined, { nonNullable: true }),
+  on: Record<string, unknown> = {}
+) =>
   renderWithProviders(SelectFormComponent, {
     inputs: {
       label: 'Activité',
@@ -17,6 +20,7 @@ const renderComponent = (control = new FormControl('', { nonNullable: true })) =
       options: OPTIONS,
       placeholder: 'Choisir',
     },
+    on,
   }).then((view) => ({ control, ...view }));
 
 describe('src/app/ui/molecules/select-form/select-form.component', () => {
@@ -39,5 +43,14 @@ describe('src/app/ui/molecules/select-form/select-form.component', () => {
     fireEvent.change(screen.getByRole('combobox'), { target: { value: 'b' } });
 
     expect(control.value).toBe('b');
+  });
+
+  it('When the user selects an option then emits selectionChange', async () => {
+    const onSelection = jest.fn();
+    await renderComponent(undefined, { selectionChange: onSelection });
+
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'b' } });
+
+    expect(onSelection).toHaveBeenCalledWith('b');
   });
 });

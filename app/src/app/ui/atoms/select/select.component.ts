@@ -1,4 +1,4 @@
-import { Component, forwardRef, input, signal } from '@angular/core';
+import { Component, forwardRef, input, output, signal } from '@angular/core';
 import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export type SelectOptionsType = {
@@ -29,6 +29,8 @@ export class SelectComponent implements ControlValueAccessor {
   placeholder = input.required<SelectProps['placeholder']>();
   id = input<string>();
 
+  readonly selectionChange = output<string>();
+
   readonly value = signal<SelectOptionsType['value'] | undefined>(undefined);
   readonly disabled = signal<boolean>(false);
 
@@ -54,6 +56,7 @@ export class SelectComponent implements ControlValueAccessor {
   select(value: string): void {
     this.value.set(value);
     this.onChange(value);
+    this.selectionChange.emit(value);
   }
 
   markTouched(): void {

@@ -1,12 +1,46 @@
-<form>
+<form app-form-container>
   <app-autocomplete-form
     name="activity"
     label="Quelle est votre activité professionnelle ?"
     [control]="form.controls.activity"
     [options]="options()"
-    placeholder="Sélectionnez votre activité"
+    placeholder="Recherchez / Sélectionnez votre activité"
     (queryChange)="query.set($event)"
+    (selectionChange)="revealField(2)"
   />
-</form>
 
-<p>Valeur sélectionnée : {{ form.value.activity }}</p>
+  @if (fieldStep() >= 2) {
+    <app-select-form
+      @slideIn
+      name="legalForm"
+      label="Quelle est la forme juridique de votre entreprise ?"
+      [control]="form.controls.legalForm"
+      [options]="legalFormOptions()"
+      placeholder="Sélectionnez la forme juridique"
+      (selectionChange)="revealField(3)"
+    />
+  }
+
+  @if (fieldStep() >= 3) {
+    <app-select-form
+      @slideIn
+      name="turnover"
+      label="Quel est votre chiffre d'affaires prévisionnel ?"
+      [control]="form.controls.turnover"
+      [options]="turnoverOptions()"
+      placeholder="Sélectionnez le chiffre d'affaires"
+      (selectionChange)="revealField(4)"
+    />
+  }
+
+  @if (fieldStep() >= 4) {
+    <app-select-form
+      @slideIn
+      name="location"
+      label="Où est situé le siège social de votre activité ?"
+      [control]="form.controls.location"
+      [options]="locationOptions()"
+      placeholder="Sélectionnez la localisation"
+    />
+  }
+</form>

@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { type FormControl, ReactiveFormsModule } from '@angular/forms';
 import { LabelComponent } from '@ui/atoms/label/label.component';
 import { SelectComponent, type SelectOptionsType } from '@ui/atoms/select/select.component';
@@ -6,7 +6,7 @@ import { SelectComponent, type SelectOptionsType } from '@ui/atoms/select/select
 export type SelectFormProps = {
   label: string;
   name: string;
-  control: FormControl<string>;
+  control: FormControl<string | undefined>;
   options: SelectOptionsType[];
   placeholder: string;
 };
@@ -23,4 +23,6 @@ export class SelectFormComponent {
   control = input.required<SelectFormProps['control']>();
   options = input.required<SelectFormProps['options']>();
   placeholder = input.required<SelectFormProps['placeholder']>();
+
+  readonly selectionChange = output<string>();
 }
