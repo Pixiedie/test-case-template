@@ -1,6 +1,7 @@
 :host {
   display: block;
   width: 100%;
+  position: relative;
 }
 
 .offer-card {
@@ -10,7 +11,10 @@
 }
 
 .offer-card__badge {
-  align-self: flex-start;
+  position: absolute;
+  top: 0;
+  left: var(--space-6);
+  transform: translateY(-50%);
 }
 
 .offer-card__footer {
