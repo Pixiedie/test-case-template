@@ -1,0 +1,15 @@
+:host {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+:host(.card--highlighted) {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
