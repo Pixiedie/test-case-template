@@ -7,7 +7,7 @@
 .app-main {
   flex: 1;
   width: 100%;
-  max-width: 720px; // reading container (tokenize if needed)
+  max-width: 1000px; // page container (tokenize if needed)
   margin: 0 auto;
   padding: var(--space-10) var(--space-6);
 }
