@@ -1,0 +1,10 @@
+<input
+  class="input"
+  [attr.id]="id()"
+  [type]="type()"
+  [value]="value()"
+  [disabled]="disabled()"
+  [placeholder]="placeholder()"
+  (input)="handleInput($any($event.target).value)"
+  (blur)="markTouched()"
+/>

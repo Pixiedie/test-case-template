@@ -1,13 +1,14 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import type { SelectOptionsType } from '@ui/atoms/select/select.component';
-import { SelectFormComponent } from '@ui/molecules/select-form/select-form.component';
+import { AutocompleteFormComponent } from '@ui/molecules/autocomplete-form/autocomplete-form.component';
+import { filterOptionsByLabel } from '@utils/filterOptionsByLabel.utils';
 import { ProfessionalActivityService } from './services/professional-activity.service';
 
 @Component({
   selector: 'app-subscription',
-  imports: [SelectFormComponent],
+  imports: [AutocompleteFormComponent],
   templateUrl: './subscription.component.html',
   styleUrl: './subscription.component.scss',
 })
@@ -18,14 +19,20 @@ export class SubscriptionComponent {
     initialValue: [],
   });
 
-  readonly options = computed<SelectOptionsType[]>(() =>
+  private readonly allOptions = computed<SelectOptionsType[]>(() =>
     this.activities().map((activity) => ({
       value: activity.id,
       label: activity.label,
     }))
   );
 
+  readonly query = signal('');
+
+  readonly options = computed(() => filterOptionsByLabel(this.allOptions(), this.query()));
+
   readonly form = new FormGroup({
-    activity: new FormControl<string>('', { nonNullable: true }),
+    activity: new FormControl<string | undefined>(undefined, {
+      nonNullable: true,
+    }),
   });
 }

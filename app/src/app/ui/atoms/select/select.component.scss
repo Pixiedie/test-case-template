@@ -1,3 +1,5 @@
+@use 'ui/styles/field' as *;
+
 :host {
   display: block;
 }
@@ -9,27 +11,13 @@
 }
 
 .select__control {
+  @include field-control;
+
   // reset native appearance
   appearance: none;
   -webkit-appearance: none;
-
-  width: 100%;
-  min-height: 44px; // hit target
-  padding: 12px 44px 12px 14px; // room for the chevron on the right
-  margin: 0;
-
-  font-family: var(--font-body);
-  font-size: var(--font-size-md);
-  line-height: 1;
-  color: var(--color-text);
-
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  padding-right: 44px; // room for the chevron on the right
   cursor: pointer;
-  transition:
-    border-color var(--transition-base),
-    box-shadow var(--transition-base);
 }
 
 // Custom chevron (SVG mask, recolored via background)
@@ -49,30 +37,10 @@
     no-repeat center / contain;
 }
 
-.select__control:hover {
-  border-color: var(--color-border-strong);
-}
-
-.select__control:focus,
-.select__control:focus-visible {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-soft);
-  background: var(--color-primary-tint);
-}
-
-.select__control:disabled {
-  cursor: not-allowed;
-  color: var(--color-text-muted);
-  background: var(--color-surface-alt);
-  border-color: var(--color-border);
-}
-
 .select:has(.select__control:disabled)::after {
   opacity: 0.5;
 }
 
-// Error state (activated later via validation)
 .select__control.is-error {
   border-color: var(--color-error);
 }

@@ -1,0 +1,37 @@
+// Shared base style for form field controls (input, select, autocomplete).
+// Consumed via `@use '../../styles/field' as *;` then `@include field-control;`.
+
+@mixin field-control {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 14px;
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
+  line-height: 1;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+
+  &:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-soft);
+    background: var(--color-primary-tint);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: var(--color-text-muted);
+    background: var(--color-surface-alt);
+    border-color: var(--color-border);
+  }
+}

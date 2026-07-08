@@ -1,10 +1,11 @@
 <form>
-  <app-select-form
+  <app-autocomplete-form
     name="activity"
-    label="Activité professionnelle"
+    label="Quelle est votre activité professionnelle ?"
     [control]="form.controls.activity"
     [options]="options()"
     placeholder="Sélectionnez votre activité"
+    (queryChange)="query.set($event)"
   />
 </form>
 

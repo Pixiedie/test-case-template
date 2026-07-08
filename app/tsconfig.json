@@ -10,7 +10,8 @@
 			"@testing/*": ["./src/testing/*"],
 			"@layouts/*": ["./src/app/layouts/*"],
 			"@data/*": ["./src/app/data/*"],
-			"@appTypes/*": ["./src/app/types/*"]
+			"@appTypes/*": ["./src/app/types/*"],
+			"@utils/*": ["./src/app/utils/*"]
 		},
 		"strict": true,
 		"noImplicitOverride": true,

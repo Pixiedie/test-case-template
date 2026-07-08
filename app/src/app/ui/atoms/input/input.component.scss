@@ -1,0 +1,9 @@
+@use 'ui/styles/field' as *;
+
+:host {
+  display: block;
+}
+
+.input {
+  @include field-control;
+}

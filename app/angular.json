@@ -32,9 +32,15 @@
               }
             ],
             "styles": [
+              "node_modules/@angular/cdk/overlay-prebuilt.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/app"
+              ]
+            }
           },
           "configurations": {
             "production": {

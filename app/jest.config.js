@@ -12,6 +12,7 @@ module.exports = {
 		"^@layouts/(.*)$": "<rootDir>/src/app/layouts/$1",
 		"^@data/(.*)$": "<rootDir>/src/app/data/$1",
 		"^@appTypes/(.*)$": "<rootDir>/src/app/types/$1",
+		"^@utils/(.*)$": "<rootDir>/src/app/utils/$1",
 	},
 	testPathIgnorePatterns: ["/node_modules/", "/dist/"],
 };

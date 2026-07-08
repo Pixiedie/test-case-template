@@ -1,0 +1,42 @@
+@use 'ui/styles/field' as *;
+
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.autocomplete__input {
+  @include field-control;
+}
+
+.autocomplete__panel {
+  width: 100%;
+  margin: var(--space-1) 0 0;
+  padding: var(--space-1);
+  list-style: none;
+  max-height: 280px;
+  overflow-y: auto;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-raised);
+}
+
+.autocomplete__option {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: var(--font-size-md);
+  cursor: pointer;
+}
+
+.autocomplete__option:hover,
+.autocomplete__option--active {
+  background: var(--color-primary-soft);
+}
+
+.autocomplete__empty {
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}

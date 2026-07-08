@@ -1,0 +1,9 @@
+<app-label [text]="label()" [htmlFor]="name()" />
+<app-autocomplete
+  [id]="name()"
+  [formControl]="control()"
+  [options]="options()"
+  [placeholder]="placeholder()"
+  (queryChange)="queryChange.emit($event)"
+  (selectionChange)="selectionChange.emit($event)"
+/>
