@@ -1,0 +1,8 @@
+ <button
+    type="button"
+    class="theme-toggle"
+    (click)="themeToggle.emit()"
+    [attr.aria-label]="isLight() ? 'Passer en mode sombre' : 'Passer en mode clair'"
+  >
+    {{ isLight() ?  '🌙': '☀️' }}
+  </button>

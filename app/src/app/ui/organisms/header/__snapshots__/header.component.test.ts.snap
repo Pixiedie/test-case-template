@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`src/app/ui/organisms/header/header.component When rendered then matches the snapshot 1`] = `
+<div
+  id="root3"
+>
+  <header
+    class="app-header"
+  >
+    <span
+      class="app-header__brand"
+    >
+      Simplis
+    </span>
+    <app-theme-toggle>
+      <button
+        aria-label="Passer en mode sombre"
+        class="theme-toggle"
+        type="button"
+      >
+         🌙 
+      </button>
+    </app-theme-toggle>
+  </header>
+</div>
+`;

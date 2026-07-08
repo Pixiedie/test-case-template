@@ -41,6 +41,7 @@ module.exports = defineConfig([
 					fixStyle: "inline-type-imports",
 				},
 			],
+			"@typescript-eslint/consistent-type-definitions": "off",
 		},
 	},
 	{

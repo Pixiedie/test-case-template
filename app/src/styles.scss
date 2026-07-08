@@ -1,1 +1,103 @@
-/* You can add global styles to this file, and also import other style files */
+// =============================================================
+//  GLOBAL stylesheet (declared in angular.json).
+//  This is the ONLY place that actually emits CSS from the
+//  tokens. Components then consume them via var(--…).
+// =============================================================
+
+@use './styles/tokens' as *;
+
+// -------------------------------------------------------------
+//  Emit the tokens as CSS custom properties
+// -------------------------------------------------------------
+
+// Themed colors + shadows (light mode by default)
+:root {
+  @include emit-theme($light);
+  @include emit-shadows($shadow-light);
+
+  // Non-themed tokens also exposed as var() for a
+  // "var(--…) everywhere" usage without @use in each component.
+  --font-display: #{$font-display};
+  --font-body: #{$font-body};
+
+  --font-weight-regular: #{$font-weight-regular};
+  --font-weight-medium: #{$font-weight-medium};
+  --font-weight-semibold: #{$font-weight-semibold};
+  --font-weight-bold: #{$font-weight-bold};
+
+  --font-size-xs: #{$font-size-xs};
+  --font-size-sm: #{$font-size-sm};
+  --font-size-md: #{$font-size-md};
+  --font-size-lg: #{$font-size-lg};
+  --font-size-xl: #{$font-size-xl};
+  --font-size-2xl: #{$font-size-2xl};
+  --font-size-3xl: #{$font-size-3xl};
+  --font-size-display: #{$font-size-display};
+
+  --line-height-tight: #{$line-height-tight};
+  --line-height-snug: #{$line-height-snug};
+  --line-height-body: #{$line-height-body};
+  --letter-spacing-tight: #{$letter-spacing-tight};
+
+  --radius-sm: #{$radius-sm};
+  --radius-md: #{$radius-md};
+  --radius-lg: #{$radius-lg};
+  --radius-pill: #{$radius-pill};
+
+  --space-1: #{$space-1};
+  --space-2: #{$space-2};
+  --space-3: #{$space-3};
+  --space-4: #{$space-4};
+  --space-5: #{$space-5};
+  --space-6: #{$space-6};
+  --space-8: #{$space-8};
+  --space-10: #{$space-10};
+
+  --transition-fast: #{$transition-fast};
+  --transition-base: #{$transition-base};
+}
+
+// Dark mode overrides — driven by ThemeService: <html data-theme="dark">
+:root[data-theme='dark'] {
+  @include emit-theme($dark);
+  @include emit-shadows($shadow-dark);
+}
+
+// -------------------------------------------------------------
+//  Base minimale
+// -------------------------------------------------------------
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-body);
+  color: var(--color-text);
+  background: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition:
+    background var(--transition-base),
+    color var(--transition-base);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+  letter-spacing: var(--letter-spacing-tight);
+  margin: 0;
+}
