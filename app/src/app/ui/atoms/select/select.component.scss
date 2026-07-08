@@ -1,0 +1,87 @@
+:host {
+  display: block;
+}
+
+.select {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.select__control {
+  // reset native appearance
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 100%;
+  min-height: 44px; // hit target
+  padding: 12px 44px 12px 14px; // room for the chevron on the right
+  margin: 0;
+
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
+  line-height: 1;
+  color: var(--color-text);
+
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+// Custom chevron (SVG mask, recolored via background)
+.select::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: var(--space-4);
+  width: 12px;
+  height: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  background: var(--color-text-muted);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    no-repeat center / contain;
+}
+
+.select__control:hover {
+  border-color: var(--color-border-strong);
+}
+
+.select__control:focus,
+.select__control:focus-visible {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
+  background: var(--color-primary-tint);
+}
+
+.select__control:disabled {
+  cursor: not-allowed;
+  color: var(--color-text-muted);
+  background: var(--color-surface-alt);
+  border-color: var(--color-border);
+}
+
+.select:has(.select__control:disabled)::after {
+  opacity: 0.5;
+}
+
+// Error state (activated later via validation)
+.select__control.is-error {
+  border-color: var(--color-error);
+}
+
+.select__control.is-error:focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-error) 22%, transparent);
+}
+
+.select__control option {
+  background: var(--color-surface);
+  color: var(--color-text);
+}

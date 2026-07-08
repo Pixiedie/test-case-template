@@ -42,6 +42,10 @@ module.exports = defineConfig([
 				},
 			],
 			"@typescript-eslint/consistent-type-definitions": "off",
+			"@typescript-eslint/no-empty-function": [
+				"error",
+				{ allow: ["arrowFunctions"] },
+			],
 		},
 	},
 	{

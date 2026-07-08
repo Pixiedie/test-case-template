@@ -1,0 +1,6 @@
+<label class="label" [attr.for]="htmlFor()">
+  {{ text() }}
+  @if (required()) {
+    <span class="label__required" aria-hidden="true">*</span>
+  }
+</label>

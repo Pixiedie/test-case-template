@@ -8,7 +8,9 @@
 			"@ui/*": ["./src/app/ui/*"],
 			"@pages/*": ["./src/app/pages/*"],
 			"@testing/*": ["./src/testing/*"],
-			"@layouts/*": ["./src/app/layouts/*"]
+			"@layouts/*": ["./src/app/layouts/*"],
+			"@data/*": ["./src/app/data/*"],
+			"@appTypes/*": ["./src/app/types/*"]
 		},
 		"strict": true,
 		"noImplicitOverride": true,

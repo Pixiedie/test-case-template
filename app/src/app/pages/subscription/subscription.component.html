@@ -1,0 +1,11 @@
+<form>
+  <app-select-form
+    name="activity"
+    label="Activité professionnelle"
+    [control]="form.controls.activity"
+    [options]="options()"
+    placeholder="Sélectionnez votre activité"
+  />
+</form>
+
+<p>Valeur sélectionnée : {{ form.value.activity }}</p>
