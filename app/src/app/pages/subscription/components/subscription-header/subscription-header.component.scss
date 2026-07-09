@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+.subscription-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.subscription-header__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.subscription-header__subtitle {
+  margin: 0;
+  max-width: 48ch;
+  color: var(--color-text-muted);
+}

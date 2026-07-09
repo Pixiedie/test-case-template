@@ -1,0 +1,11 @@
+<header class="subscription-header">
+  <app-progress-bar [value]="currentStep()" [max]="totalSteps()" />
+
+  <div class="subscription-header__text">
+    <app-step-counter [current]="currentStep()" [total]="totalSteps()" />
+    <h1 app-heading>{{ title() }}</h1>
+    @if (subtitle()) {
+      <p class="subscription-header__subtitle">{{ subtitle() }}</p>
+    }
+  </div>
+</header>
