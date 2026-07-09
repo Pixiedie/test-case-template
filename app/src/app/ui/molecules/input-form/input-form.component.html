@@ -1,0 +1,10 @@
+<app-label [text]="label()" [htmlFor]="name()" [required]="required()" />
+<app-input
+  [id]="name()"
+  [formControl]="control()"
+  [type]="type()"
+  [placeholder]="placeholder()"
+/>
+@if (hasError()) {
+  <p class="input-form__error">{{ errorMessage() }}</p>
+}
