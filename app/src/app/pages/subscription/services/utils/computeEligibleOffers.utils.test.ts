@@ -11,7 +11,8 @@ import { PRODUCTS } from '@data/products.data';
 import {
   computeEligibleOffers,
   type EligibilityCriteria,
-  hasSuperiorCapital,
+  isBestFit,
+  isUpsell,
   matchesActivity,
   matchesLegalForm,
   matchesLocation,
@@ -122,17 +123,31 @@ describe('src/app/pages/subscription/services/utils/computeEligibleOffers.utils'
     });
   });
 
-  describe('hasSuperiorCapital', () => {
-    it('When the product has no turnover cap then returns true', () => {
-      expect(hasSuperiorCapital(null, 5_000_000)).toBe(true);
+  describe('isBestFit', () => {
+    it('When the product has no cap then it is always a best fit', () => {
+      expect(isBestFit(buildProduct({ maxTurnover: null }), 150_000)).toBe(true);
     });
 
-    it('When the cap is above the turnover then returns true', () => {
-      expect(hasSuperiorCapital(1_000_000, 500_000)).toBe(true);
+    it('When the capital equals the best-fit tier then returns true', () => {
+      expect(isBestFit(buildProduct({ maxTurnover: 150_000 }), 150_000)).toBe(true);
     });
 
-    it('When the cap equals the turnover then returns false', () => {
-      expect(hasSuperiorCapital(500_000, 500_000)).toBe(false);
+    it('When the capital is above the best-fit tier then returns false', () => {
+      expect(isBestFit(buildProduct({ maxTurnover: 500_000 }), 150_000)).toBe(false);
+    });
+  });
+
+  describe('isUpsell', () => {
+    it('When the product has no cap then it is never an upsell', () => {
+      expect(isUpsell(buildProduct({ maxTurnover: null }), 150_000)).toBe(false);
+    });
+
+    it('When the capital is strictly above the best-fit tier then returns true', () => {
+      expect(isUpsell(buildProduct({ maxTurnover: 500_000 }), 150_000)).toBe(true);
+    });
+
+    it('When the capital equals the best-fit tier then returns false', () => {
+      expect(isUpsell(buildProduct({ maxTurnover: 150_000 }), 150_000)).toBe(false);
     });
   });
 
@@ -167,7 +182,7 @@ describe('src/app/pages/subscription/services/utils/computeEligibleOffers.utils'
       ]);
     });
 
-    it('When an auto-entrepreneur earns 150k then exact-cap offers are best fit and WAKAM unlimited cap is an upsell', () => {
+    it('When an auto-entrepreneur earns 150k then WAKAM unlimited cap is grouped with the best fit, not the upsells', () => {
       const criteria: EligibilityCriteria = {
         activityId: 'art-objects-trade',
         legalFormId: LegalFormEnum.AUTO_ENTREPRENEUR,
@@ -177,9 +192,10 @@ describe('src/app/pages/subscription/services/utils/computeEligibleOffers.utils'
 
       expect(summarize(computeEligibleOffers(criteria, PRODUCTS))).toEqual([
         { id: 'axa-starter', recommendation: OfferRecommendationEnum.BEST_FIT },
+        { id: 'wakam-self-employed-standard', recommendation: OfferRecommendationEnum.BEST_FIT },
         { id: 'hiscox-avantage', recommendation: OfferRecommendationEnum.BEST_FIT },
-        { id: 'wakam-self-employed-standard', recommendation: OfferRecommendationEnum.UPSELL },
         { id: 'axa-rainboots', recommendation: OfferRecommendationEnum.UPSELL },
+        { id: 'hiscox-avantage-plus', recommendation: OfferRecommendationEnum.UPSELL },
       ]);
     });
 

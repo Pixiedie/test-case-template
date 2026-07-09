@@ -47,14 +47,18 @@ export const matchesLocation = (
 const BEST_FIT_COUNT = 3;
 const UPSELL_COUNT = 2;
 
-// A missing cap means unlimited capital, i.e. the highest possible tier.
+// A missing cap means unlimited capital: the product covers any turnover.
 const capitalOf = (maxTurnover: number | null): number =>
 	maxTurnover ?? Number.POSITIVE_INFINITY;
 
-export const hasSuperiorCapital = (
-	maxTurnover: number | null,
-	threshold: number,
-): boolean => capitalOf(maxTurnover) > threshold;
+// An unlimited-capital product fits any turnover, so it belongs with the
+// best-fit offers rather than being treated as a higher tier.
+export const isBestFit = (product: Product, bestFitCapital: number): boolean =>
+	product.maxTurnover === null || product.maxTurnover === bestFitCapital;
+
+// Upsell = a genuine trade-up: a finite capital strictly above the best-fit tier.
+export const isUpsell = (product: Product, bestFitCapital: number): boolean =>
+	product.maxTurnover !== null && product.maxTurnover > bestFitCapital;
 
 export const computeEligibleOffers = (
 	criteria: EligibilityCriteria,
@@ -74,18 +78,17 @@ export const computeEligibleOffers = (
 		return [];
 	}
 
-	// Best fit = tightest capital that still covers the requested turnover.
+	// Best fit = tightest finite capital that still covers the requested turnover.
 	const bestFitCapital = Math.min(
 		...eligibleProducts.map((product) => capitalOf(product.maxTurnover)),
 	);
 
 	const bestFitProducts = eligibleProducts
-		.filter((product) => capitalOf(product.maxTurnover) === bestFitCapital)
+		.filter((product) => isBestFit(product, bestFitCapital))
 		.slice(0, BEST_FIT_COUNT);
 
-	// Upsell = cheapest offers whose capital is a tier above the best fit.
 	const upsellProducts = eligibleProducts
-		.filter((product) => hasSuperiorCapital(product.maxTurnover, bestFitCapital))
+		.filter((product) => isUpsell(product, bestFitCapital))
 		.slice(0, UPSELL_COUNT);
 
 	return [
