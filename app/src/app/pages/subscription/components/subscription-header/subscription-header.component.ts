@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { HeadingComponent } from '@ui/atoms/heading/heading.component';
 import { ProgressBarComponent } from '@ui/atoms/progress-bar/progress-bar.component';
 import { StepCounterComponent } from '@ui/atoms/step-counter/step-counter.component';
@@ -8,6 +8,7 @@ export type SubscriptionHeaderProps = {
   totalSteps: number;
   title: string;
   subtitle: string;
+  backLabel: string;
 };
 
 @Component({
@@ -21,4 +22,7 @@ export class SubscriptionHeaderComponent {
   totalSteps = input.required<SubscriptionHeaderProps['totalSteps']>();
   title = input.required<SubscriptionHeaderProps['title']>();
   subtitle = input<SubscriptionHeaderProps['subtitle']>('');
+  backLabel = input<SubscriptionHeaderProps['backLabel']>('');
+
+  readonly back = output<void>();
 }

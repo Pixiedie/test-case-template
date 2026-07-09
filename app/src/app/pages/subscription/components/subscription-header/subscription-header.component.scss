@@ -8,6 +8,21 @@
   gap: var(--space-6);
 }
 
+.subscription-header__back {
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-text);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
 .subscription-header__text {
   display: flex;
   flex-direction: column;

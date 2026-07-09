@@ -1,26 +1,20 @@
+app-subscription-header {
+  display: block;
+  margin: 0 auto var(--space-8);
+}
+
 form {
   max-width: 640px; // reading width for the form, results use the full page width
-  margin-inline: auto;
+  
+  button {
+    max-width: max-content;
+  }
 }
 
 .results-zone {
   display: flex;
   flex-direction: column;
   gap: var(--space-8);
-}
-
-.results-zone__back {
-  align-self: flex-start;
-  padding: 0;
-  border: none;
-  background: none;
-  color: var(--color-text-muted);
-  font-size: var(--font-size-md);
-  cursor: pointer;
-
-  &:hover {
-    color: var(--color-text);
-  }
 }
 
 .results {
@@ -52,7 +46,6 @@ form {
   flex-direction: column;
   gap: var(--space-4);
   max-width: 640px;
-  margin-inline: auto;
 }
 
 .subscriber__intro,

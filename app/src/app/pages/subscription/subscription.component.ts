@@ -19,24 +19,15 @@ import {
   SubscriberFormComponent,
   type SubscriberInfoType,
 } from './components/subscriber-form/subscriber-form.component';
+import { SubscriptionHeaderComponent } from './components/subscription-header/subscription-header.component';
 import { BusinessLocationService } from './services/business-location.service';
+import { SubscriptionIntentEnum, SubscriptionViewEnum } from './subscription.enums';
+import { getSubscriptionHeaderContent } from './utils/subscriptionHeader.utils';
 import { EligibilityService } from './services/eligibility.service';
 import { LegalFormService } from './services/legal-form.service';
 import { ProfessionalActivityService } from './services/professional-activity.service';
 import { TurnoverService } from './services/turnover.service';
 import type { EligibilityCriteria } from './services/utils/computeEligibleOffers.utils';
-
-export enum SubscriptionViewEnum {
-  FORM = 'form',
-  RESULTS = 'results',
-  SUBSCRIBER = 'subscriber',
-  DONE = 'done',
-}
-
-export enum SubscriptionIntentEnum {
-  SUBSCRIPTION = 'subscription',
-  ADVISOR = 'advisor',
-}
 
 type SubscriptionField = FormControl<string | undefined>;
 
@@ -61,6 +52,7 @@ const createField = (): SubscriptionField =>
     OfferCardComponent,
     ButtonComponent,
     SubscriberFormComponent,
+    SubscriptionHeaderComponent,
   ],
   templateUrl: './subscription.component.html',
   styleUrl: './subscription.component.scss',
@@ -222,6 +214,21 @@ export class SubscriptionComponent {
     this.intent() === SubscriptionIntentEnum.ADVISOR ? 'Être rappelé' : 'Souscrire'
   );
 
+  readonly totalSteps = 4;
+
+  readonly header = computed(() => getSubscriptionHeaderContent(this.view(), this.intent()));
+
+  readonly backLabel = computed(() => {
+    switch (this.view()) {
+      case SubscriptionViewEnum.RESULTS:
+        return getSubscriptionHeaderContent(SubscriptionViewEnum.FORM, this.intent()).label;
+      case SubscriptionViewEnum.SUBSCRIBER:
+        return getSubscriptionHeaderContent(SubscriptionViewEnum.RESULTS, this.intent()).label;
+      default:
+        return '';
+    }
+  });
+
   private readonly selectedActivityLabel = computed(() => {
     const activityId = this.formValue().activity;
     return this.activities().find((activity) => activity.id === activityId)?.label ?? '';
@@ -229,10 +236,6 @@ export class SubscriptionComponent {
 
   showOffers(): void {
     this.view.set(SubscriptionViewEnum.RESULTS);
-  }
-
-  editForm(): void {
-    this.view.set(SubscriptionViewEnum.FORM);
   }
 
   onOfferSelect(card: OfferCardProps): void {
@@ -246,8 +249,13 @@ export class SubscriptionComponent {
     this.view.set(SubscriptionViewEnum.SUBSCRIBER);
   }
 
-  backToResults(): void {
-    this.view.set(SubscriptionViewEnum.RESULTS);
+  onBack(): void {
+    if (this.view() === SubscriptionViewEnum.SUBSCRIBER) {
+      this.view.set(SubscriptionViewEnum.RESULTS);
+      return;
+    }
+
+    this.view.set(SubscriptionViewEnum.FORM);
   }
 
   onSubscriberSubmit(info: SubscriberInfoType): void {

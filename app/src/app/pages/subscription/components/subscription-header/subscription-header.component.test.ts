@@ -1,7 +1,7 @@
-import { renderWithProviders, screen } from '@testing/render';
+import { fireEvent, renderWithProviders, screen } from '@testing/render';
 import { SubscriptionHeaderComponent } from './subscription-header.component';
 
-const renderComponent = (inputs: Record<string, unknown> = {}) =>
+const renderComponent = (inputs: Record<string, unknown> = {}, on: Record<string, unknown> = {}) =>
   renderWithProviders(SubscriptionHeaderComponent, {
     inputs: {
       currentStep: 2,
@@ -10,6 +10,7 @@ const renderComponent = (inputs: Record<string, unknown> = {}) =>
       subtitle: 'Sélectionnez les garanties adaptées à votre activité.',
       ...inputs,
     },
+    on,
   });
 
 describe('src/app/pages/subscription/components/subscription-header/subscription-header.component', () => {
@@ -33,5 +34,26 @@ describe('src/app/pages/subscription/components/subscription-header/subscription
     const { container } = await renderComponent({ subtitle: '' });
 
     expect(container.querySelector('.subscription-header__subtitle')).toBeNull();
+  });
+
+  it('When a backLabel is provided then shows the back button', async () => {
+    await renderComponent({ backLabel: 'Entreprise' });
+
+    expect(screen.getByRole('button', { name: /Entreprise/ })).toBeTruthy();
+  });
+
+  it('When no backLabel is provided then does not show the back button', async () => {
+    const { container } = await renderComponent({ backLabel: '' });
+
+    expect(container.querySelector('.subscription-header__back')).toBeNull();
+  });
+
+  it('When the back button is clicked then emits back', async () => {
+    const onBack = jest.fn();
+    await renderComponent({ backLabel: 'Entreprise' }, { back: onBack });
+
+    fireEvent.click(screen.getByRole('button', { name: /Entreprise/ }));
+
+    expect(onBack).toHaveBeenCalled();
   });
 });

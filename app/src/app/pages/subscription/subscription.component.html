@@ -1,3 +1,12 @@
+<app-subscription-header
+  [currentStep]="header().step"
+  [totalSteps]="totalSteps"
+  [title]="header().title"
+  [subtitle]="header().subtitle"
+  [backLabel]="backLabel()"
+  (back)="onBack()"
+/>
+
 @if (view() === SubscriptionViewEnum.FORM) {
   <form app-form-container @slideOutLeft>
     <app-autocomplete-form
@@ -48,10 +57,6 @@
   </form>
 } @else if (view() === SubscriptionViewEnum.RESULTS) {
   <div class="results-zone" @slideInRight>
-    <button type="button" class="results-zone__back" (click)="editForm()">
-      ← Modifier mes réponses
-    </button>
-
     @if (bestFitCards().length) {
       <section class="results">
         <h2 app-heading>Les meilleures offres</h2>
@@ -105,22 +110,10 @@
   </div>
 } @else if (view() === SubscriptionViewEnum.SUBSCRIBER) {
   <div class="subscriber" @slideInRight>
-    <button type="button" class="results-zone__back" (click)="backToResults()">
-      ← Retour aux offres
-    </button>
-
-    @if (intent() === SubscriptionIntentEnum.ADVISOR) {
-      <h2 app-heading>Être recontacté par un conseiller</h2>
+    @if (intent() === SubscriptionIntentEnum.SUBSCRIPTION && selectedOffer(); as offer) {
       <p class="subscriber__intro">
-        Laissez-nous vos coordonnées : un conseiller étudiera votre situation et reviendra vers vous.
+        Offre sélectionnée : <strong>{{ offer.title }}</strong> — {{ offer.price | currency: 'EUR' }} {{ offer.pricePeriod }}
       </p>
-    } @else {
-      <h2 app-heading>Finaliser votre souscription</h2>
-      @if (selectedOffer(); as offer) {
-        <p class="subscriber__intro">
-          Offre sélectionnée : <strong>{{ offer.title }}</strong> — {{ offer.price | currency: 'EUR' }} {{ offer.pricePeriod }}
-        </p>
-      }
     }
 
     <app-subscriber-form
@@ -131,10 +124,8 @@
 } @else if (view() === SubscriptionViewEnum.DONE) {
   <div class="done" @slideInRight>
     @if (intent() === SubscriptionIntentEnum.ADVISOR) {
-      <h2 app-heading>Merci !</h2>
       <p>Un conseiller vous recontactera dans les plus brefs délais.</p>
     } @else {
-      <h2 app-heading>Paiement</h2>
       @if (selectedOffer(); as offer) {
         <p>
           Dernière étape : le règlement de votre offre <strong>{{ offer.title }}</strong>

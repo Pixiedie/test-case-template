@@ -1,4 +1,10 @@
 <header class="subscription-header">
+  @if (backLabel()) {
+    <button type="button" class="subscription-header__back" (click)="back.emit()">
+      ← {{ backLabel() }}
+    </button>
+  }
+
   <app-progress-bar [value]="currentStep()" [max]="totalSteps()" />
 
   <div class="subscription-header__text">
