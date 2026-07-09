@@ -1,5 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, computed, inject, signal } from '@angular/core';
+import { CurrencyPipe, formatCurrency } from '@angular/common';
+import { Component, computed, inject, LOCALE_ID, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import type { BusinessLocationEnum } from '@appTypes/BusinessLocation.types';
@@ -14,12 +15,28 @@ import { SelectFormComponent } from '@ui/molecules/select-form/select-form.compo
 import { OfferCardComponent, type OfferCardProps } from '@ui/organisms/offer-card/offer-card.component';
 import { filterOptionsByLabel } from '@utils/filterOptionsByLabel.utils';
 import { of, switchMap } from 'rxjs';
+import {
+  SubscriberFormComponent,
+  type SubscriberInfoType,
+} from './components/subscriber-form/subscriber-form.component';
 import { BusinessLocationService } from './services/business-location.service';
 import { EligibilityService } from './services/eligibility.service';
 import { LegalFormService } from './services/legal-form.service';
 import { ProfessionalActivityService } from './services/professional-activity.service';
 import { TurnoverService } from './services/turnover.service';
 import type { EligibilityCriteria } from './services/utils/computeEligibleOffers.utils';
+
+export enum SubscriptionViewEnum {
+  FORM = 'form',
+  RESULTS = 'results',
+  SUBSCRIBER = 'subscriber',
+  DONE = 'done',
+}
+
+export enum SubscriptionIntentEnum {
+  SUBSCRIPTION = 'subscription',
+  ADVISOR = 'advisor',
+}
 
 type SubscriptionField = FormControl<string | undefined>;
 
@@ -33,18 +50,17 @@ type SubscriptionFormControls = {
 const createField = (): SubscriptionField =>
   new FormControl<string | undefined>(undefined, { nonNullable: true });
 
-const formatAmount = (value: number): string =>
-  value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-
 @Component({
   selector: 'app-subscription',
   imports: [
     FormContainerComponent,
     AutocompleteFormComponent,
     SelectFormComponent,
+    CurrencyPipe,
     HeadingComponent,
     OfferCardComponent,
     ButtonComponent,
+    SubscriberFormComponent,
   ],
   templateUrl: './subscription.component.html',
   styleUrl: './subscription.component.scss',
@@ -74,6 +90,7 @@ export class SubscriptionComponent {
   private readonly turnoverService = inject(TurnoverService);
   private readonly businessLocationService = inject(BusinessLocationService);
   private readonly eligibilityService = inject(EligibilityService);
+  private readonly locale = inject(LOCALE_ID);
 
   private readonly activities = toSignal(this.activityService.getActivities(), {
     initialValue: [],
@@ -186,7 +203,12 @@ export class SubscriptionComponent {
       .map((offer) => this.toCardProps(offer, false))
   );
 
-  readonly view = signal<'form' | 'results'>('form');
+  protected readonly SubscriptionViewEnum = SubscriptionViewEnum;
+  protected readonly SubscriptionIntentEnum = SubscriptionIntentEnum;
+
+  readonly view = signal<SubscriptionViewEnum>(SubscriptionViewEnum.FORM);
+
+  readonly intent = signal<SubscriptionIntentEnum>(SubscriptionIntentEnum.SUBSCRIPTION);
 
   readonly canSeeOffers = computed(() => this.criteria() !== null);
 
@@ -194,21 +216,43 @@ export class SubscriptionComponent {
 
   readonly selectedOffer = signal<OfferCardProps | null>(null);
 
+  readonly subscriber = signal<SubscriberInfoType | null>(null);
+
+  readonly subscriberSubmitLabel = computed(() =>
+    this.intent() === SubscriptionIntentEnum.ADVISOR ? 'Être rappelé' : 'Souscrire'
+  );
+
   private readonly selectedActivityLabel = computed(() => {
     const activityId = this.formValue().activity;
     return this.activities().find((activity) => activity.id === activityId)?.label ?? '';
   });
 
   showOffers(): void {
-    this.view.set('results');
+    this.view.set(SubscriptionViewEnum.RESULTS);
   }
 
   editForm(): void {
-    this.view.set('form');
+    this.view.set(SubscriptionViewEnum.FORM);
   }
 
   onOfferSelect(card: OfferCardProps): void {
     this.selectedOffer.set(card);
+    this.intent.set(SubscriptionIntentEnum.SUBSCRIPTION);
+    this.view.set(SubscriptionViewEnum.SUBSCRIBER);
+  }
+
+  requestAdvisor(): void {
+    this.intent.set(SubscriptionIntentEnum.ADVISOR);
+    this.view.set(SubscriptionViewEnum.SUBSCRIBER);
+  }
+
+  backToResults(): void {
+    this.view.set(SubscriptionViewEnum.RESULTS);
+  }
+
+  onSubscriberSubmit(info: SubscriberInfoType): void {
+    this.subscriber.set(info);
+    this.view.set(SubscriptionViewEnum.DONE);
   }
 
   private toCardProps(offer: Offer, recommended: boolean): OfferCardProps {
@@ -226,7 +270,7 @@ export class SubscriptionComponent {
       price: product.premium,
       priceLabel: 'Prime annuelle',
       pricePeriod: '/an',
-      ctaLabel: "Voir l'offre",
+      ctaLabel: 'Souscrire',
     };
   }
 
@@ -235,6 +279,8 @@ export class SubscriptionComponent {
   }
 
   private capitalLabel(maxTurnover: number | null): string {
-    return maxTurnover === null ? 'Illimité' : `${formatAmount(maxTurnover)} €`;
+    return maxTurnover === null
+      ? 'Illimité'
+      : formatCurrency(maxTurnover, this.locale, '€', 'EUR', '1.0-0');
   }
 }

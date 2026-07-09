@@ -20,7 +20,7 @@
       <p class="offer-card__price">
         <span class="offer-card__price-label">{{ priceLabel() }}</span>
         <span class="offer-card__price-value">
-          {{ price() }} €<span class="offer-card__price-period"> {{ pricePeriod() }}</span>
+          {{ price() | currency: 'EUR' }}<span class="offer-card__price-period"> {{ pricePeriod() }}</span>
         </span>
       </p>
 

@@ -1,0 +1,48 @@
+<form app-form-container [formGroup]="form" (ngSubmit)="onSubmit()">
+  <app-input-form
+    label="Prénom"
+    name="firstName"
+    [control]="form.controls.firstName"
+    [required]="true"
+    placeholder="Votre prénom"
+  />
+
+  <app-input-form
+    label="Nom"
+    name="lastName"
+    [control]="form.controls.lastName"
+    [required]="true"
+    placeholder="Votre nom"
+  />
+
+  <app-input-form
+    label="Email"
+    name="email"
+    [control]="form.controls.email"
+    [type]="InputTypeEnum.EMAIL"
+    [required]="true"
+    placeholder="vous@exemple.fr"
+  />
+
+  <app-input-form
+    label="Téléphone"
+    name="phone"
+    [control]="form.controls.phone"
+    [type]="InputTypeEnum.TEL"
+    [required]="true"
+    placeholder="06 12 34 56 78"
+    [errorMessages]="{ pattern: 'Numéro de téléphone invalide' }"
+  />
+
+  <app-input-form
+    label="Adresse postale"
+    name="address"
+    [control]="form.controls.address"
+    [required]="true"
+    placeholder="N°, rue, code postal, ville"
+  />
+
+  <button type="submit" app-button class="subscriber-form__submit" [disabled]="form.invalid">
+    {{ submitLabel() }}
+  </button>
+</form>

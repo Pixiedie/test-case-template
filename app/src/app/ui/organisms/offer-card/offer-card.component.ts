@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 import { ButtonComponent } from '@ui/atoms/button/button.component';
 import { CardComponent, CardVariantEnum } from '@ui/atoms/card/card.component';
@@ -20,6 +21,7 @@ export type OfferCardProps = {
 @Component({
   selector: 'app-offer-card',
   imports: [
+    CurrencyPipe,
     CardComponent,
     TagComponent,
     HeadingComponent,
