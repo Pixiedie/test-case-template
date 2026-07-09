@@ -15,7 +15,9 @@
       [control]="form.controls.activity"
       [options]="options()"
       placeholder="Recherchez / Sélectionnez votre activité"
+      emptyActionLabel="Votre activité professionnelle n'est pas présente dans les offres souscriptibles en ligne, contactez-nous pour un devis personnalisé."
       (queryChange)="query.set($event)"
+      (emptyAction)="requestAdvisor()"
     />
 
     @if (visibleStep() >= 2) {
@@ -80,7 +82,7 @@
 
     @if (upsellCards().length) {
       <section class="results">
-        <h2 app-heading>On croit en vous</h2>
+        <h2 app-heading>Anticipez votre réussite</h2>
         <div class="results__grid">
           @for (card of upsellCards(); track $index) {
             <app-offer-card

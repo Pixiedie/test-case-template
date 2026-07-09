@@ -57,4 +57,37 @@ describe('src/app/ui/atoms/autocomplete/autocomplete.component', () => {
 
     expect((screen.getByRole('combobox') as HTMLInputElement).value).toBe('Option A');
   });
+
+  it('When there are no options and an emptyActionLabel is set then shows the action', async () => {
+    await renderWithProviders(AutocompleteComponent, {
+      inputs: { options: [], placeholder: 'Choisir', emptyActionLabel: 'Autre activité' },
+    });
+
+    fireEvent.focus(screen.getByRole('combobox'));
+
+    expect(screen.getByRole('button', { name: 'Autre activité' })).toBeTruthy();
+  });
+
+  it('When the empty action is clicked then emits emptyAction', async () => {
+    const onEmptyAction = jest.fn();
+    await renderWithProviders(AutocompleteComponent, {
+      inputs: { options: [], placeholder: 'Choisir', emptyActionLabel: 'Autre activité' },
+      on: { emptyAction: onEmptyAction },
+    });
+
+    fireEvent.focus(screen.getByRole('combobox'));
+    fireEvent.click(screen.getByRole('button', { name: 'Autre activité' }));
+
+    expect(onEmptyAction).toHaveBeenCalled();
+  });
+
+  it('When there are no options and no emptyActionLabel then shows the default empty text', async () => {
+    await renderWithProviders(AutocompleteComponent, {
+      inputs: { options: [], placeholder: 'Choisir' },
+    });
+
+    fireEvent.focus(screen.getByRole('combobox'));
+
+    expect(screen.getByText('Aucun résultat')).toBeTruthy();
+  });
 });

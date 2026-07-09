@@ -34,7 +34,7 @@ export const getSubscriptionHeaderContent = (
             label: 'Coordonnées',
             title: 'Laissez-nous vos coordonnées',
             subtitle:
-              'Un conseiller étudiera votre situation et reviendra vers vous pour vous proposer une offre adaptée.',
+              "Un conseiller vous recontactera afin d'étudier ensemble votre situation et les offres qui pourraient vous correspondre.",
           }
         : {
             step: 3,

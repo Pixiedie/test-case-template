@@ -20,9 +20,11 @@ export class AutocompleteComponent implements ControlValueAccessor {
   options = input.required<SelectOptionsType[]>();
   placeholder = input.required<string>();
   id = input<string>();
+  emptyActionLabel = input<string>('');
 
   readonly queryChange = output<string>();
   readonly selectionChange = output<string>();
+  readonly emptyAction = output<void>();
 
   private readonly inputRef = viewChild.required<ElementRef<HTMLInputElement>>('input');
 
@@ -89,6 +91,11 @@ export class AutocompleteComponent implements ControlValueAccessor {
     this.selectionChange.emit(option.value);
     this.isOpen.set(false);
     this.activeIndex.set(-1);
+  }
+
+  triggerEmptyAction(): void {
+    this.isOpen.set(false);
+    this.emptyAction.emit();
   }
 
   onKeydown(event: KeyboardEvent): void {

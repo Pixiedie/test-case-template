@@ -42,7 +42,15 @@
         {{ option.label }}
       </li>
     } @empty {
-      <li class="autocomplete__empty">Aucun résultat</li>
+      @if (emptyActionLabel()) {
+        <li class="autocomplete__empty">
+          <button type="button" class="autocomplete__empty-action" (click)="triggerEmptyAction()">
+            {{ emptyActionLabel() }}
+          </button>
+        </li>
+      } @else {
+        <li class="autocomplete__empty">Aucun résultat</li>
+      }
     }
   </ul>
 </ng-template>

@@ -10,6 +10,7 @@ export type AutocompleteFormComponentProps = {
   control: FormControl<string | undefined>;
   options: SelectOptionsType[];
   placeholder: string;
+  emptyActionLabel: string;
 };
 
 @Component({
@@ -24,7 +25,9 @@ export class AutocompleteFormComponent {
   control = input.required<AutocompleteFormComponentProps['control']>();
   options = input.required<AutocompleteFormComponentProps['options']>();
   placeholder = input.required<AutocompleteFormComponentProps['placeholder']>();
+  emptyActionLabel = input<AutocompleteFormComponentProps['emptyActionLabel']>('');
 
   readonly queryChange = output<string>();
   readonly selectionChange = output<string>();
+  readonly emptyAction = output<void>();
 }

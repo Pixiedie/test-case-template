@@ -1,6 +1,12 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  border: 1px solid red;
+}
+
 app-subscription-header {
   display: block;
-  margin: 0 auto var(--space-8);
 }
 
 form {

@@ -210,6 +210,8 @@ export class SubscriptionComponent {
 
   readonly subscriber = signal<SubscriberInfoType | null>(null);
 
+  private readonly subscriberOrigin = signal<SubscriptionViewEnum>(SubscriptionViewEnum.RESULTS);
+
   readonly subscriberSubmitLabel = computed(() =>
     this.intent() === SubscriptionIntentEnum.ADVISOR ? 'Être rappelé' : 'Souscrire'
   );
@@ -223,7 +225,7 @@ export class SubscriptionComponent {
       case SubscriptionViewEnum.RESULTS:
         return getSubscriptionHeaderContent(SubscriptionViewEnum.FORM, this.intent()).label;
       case SubscriptionViewEnum.SUBSCRIBER:
-        return getSubscriptionHeaderContent(SubscriptionViewEnum.RESULTS, this.intent()).label;
+        return getSubscriptionHeaderContent(this.subscriberOrigin(), this.intent()).label;
       default:
         return '';
     }
@@ -241,17 +243,19 @@ export class SubscriptionComponent {
   onOfferSelect(card: OfferCardProps): void {
     this.selectedOffer.set(card);
     this.intent.set(SubscriptionIntentEnum.SUBSCRIPTION);
+    this.subscriberOrigin.set(SubscriptionViewEnum.RESULTS);
     this.view.set(SubscriptionViewEnum.SUBSCRIBER);
   }
 
   requestAdvisor(): void {
+    this.subscriberOrigin.set(this.view());
     this.intent.set(SubscriptionIntentEnum.ADVISOR);
     this.view.set(SubscriptionViewEnum.SUBSCRIBER);
   }
 
   onBack(): void {
     if (this.view() === SubscriptionViewEnum.SUBSCRIBER) {
-      this.view.set(SubscriptionViewEnum.RESULTS);
+      this.view.set(this.subscriberOrigin());
       return;
     }
 

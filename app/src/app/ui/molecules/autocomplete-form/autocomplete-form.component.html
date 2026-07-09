@@ -4,6 +4,8 @@
   [formControl]="control()"
   [options]="options()"
   [placeholder]="placeholder()"
+  [emptyActionLabel]="emptyActionLabel()"
   (queryChange)="queryChange.emit($event)"
   (selectionChange)="selectionChange.emit($event)"
+  (emptyAction)="emptyAction.emit()"
 />
