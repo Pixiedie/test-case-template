@@ -13,4 +13,9 @@
   font-size: var(--font-size-xl);
   letter-spacing: var(--letter-spacing-tight);
   color: var(--color-text);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--color-primary);
+  }
 }

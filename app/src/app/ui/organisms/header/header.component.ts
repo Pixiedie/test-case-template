@@ -1,4 +1,5 @@
 import { Component, input, output } from "@angular/core";
+import { RouterLink } from "@angular/router";
 import {
 	ThemeToggleComponent,
 	type ThemeToggleComponentProps,
@@ -6,7 +7,7 @@ import {
 
 @Component({
 	selector: "app-header",
-	imports: [ThemeToggleComponent],
+	imports: [ThemeToggleComponent, RouterLink],
 	templateUrl: "./header.component.html",
 	styleUrl: "./header.component.scss",
 })
