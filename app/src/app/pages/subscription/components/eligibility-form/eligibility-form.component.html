@@ -1,0 +1,49 @@
+<form app-form-container>
+  <app-autocomplete-form
+    name="activity"
+    label="Quelle est votre activité professionnelle ?"
+    [control]="form().controls.activity"
+    [options]="activityOptions()"
+    placeholder="Recherchez / Sélectionnez votre activité"
+    [emptyActionLabel]="emptyActionLabel"
+    (queryChange)="queryChange.emit($event)"
+    (emptyAction)="requestAdvisor.emit()"
+  />
+
+  @if (visibleStep() >= 2) {
+    <app-select-form
+      @slideIn
+      name="legalForm"
+      label="Quelle est la forme juridique de votre entreprise ?"
+      [control]="form().controls.legalForm"
+      [options]="legalFormOptions()"
+      placeholder="Sélectionnez la forme juridique"
+    />
+  }
+
+  @if (visibleStep() >= 3) {
+    <app-select-form
+      @slideIn
+      name="turnover"
+      label="Quel est votre chiffre d'affaires prévisionnel ?"
+      [control]="form().controls.turnover"
+      [options]="turnoverOptions()"
+      placeholder="Sélectionnez le chiffre d'affaires"
+    />
+  }
+
+  @if (visibleStep() >= 4) {
+    <app-select-form
+      @slideIn
+      name="location"
+      label="Où est situé le siège social de votre activité ?"
+      [control]="form().controls.location"
+      [options]="locationOptions()"
+      placeholder="Sélectionnez la localisation"
+    />
+  }
+
+  @if (isComplete()) {
+    <button type="button" app-button @slideIn (click)="showOffers.emit()">Voir les offres</button>
+  }
+</form>

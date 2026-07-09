@@ -1,0 +1,50 @@
+@if (bestFitCards().length) {
+  <section class="results">
+    <h2 app-heading>Les meilleures offres</h2>
+    <div class="results__grid">
+      @for (card of bestFitCards(); track $index) {
+        <app-offer-card
+          [tagLabel]="card.tagLabel"
+          [recommended]="card.recommended"
+          [title]="card.title"
+          [lines]="card.lines"
+          [price]="card.price"
+          [priceLabel]="card.priceLabel"
+          [pricePeriod]="card.pricePeriod"
+          [ctaLabel]="card.ctaLabel"
+          (offerSelect)="offerSelect.emit(card)"
+        />
+      }
+    </div>
+  </section>
+}
+
+@if (upsellCards().length) {
+  <section class="results">
+    <h2 app-heading>Anticipez votre réussite</h2>
+    <div class="results__grid">
+      @for (card of upsellCards(); track $index) {
+        <app-offer-card
+          [tagLabel]="card.tagLabel"
+          [recommended]="card.recommended"
+          [title]="card.title"
+          [lines]="card.lines"
+          [price]="card.price"
+          [priceLabel]="card.priceLabel"
+          [pricePeriod]="card.pricePeriod"
+          [ctaLabel]="card.ctaLabel"
+          (offerSelect)="offerSelect.emit(card)"
+        />
+      }
+    </div>
+  </section>
+}
+
+@if (hasNoOffer()) {
+  <div class="results__empty">
+    <p>Aucune offre ne correspond à votre profil pour le moment.</p>
+    <button type="button" app-button (click)="requestAdvisor.emit()">
+      Être contacté par un conseiller
+    </button>
+  </div>
+}

@@ -1,0 +1,10 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.confirmation-step__note {
+  margin: 0;
+  color: var(--color-text-muted);
+}

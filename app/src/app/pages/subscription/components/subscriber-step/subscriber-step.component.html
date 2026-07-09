@@ -1,0 +1,7 @@
+@if (offer(); as offer) {
+  <p class="subscriber-step__intro">
+    Offre sélectionnée : <strong>{{ offer.title }}</strong> — {{ offer.price | currency: 'EUR' }} {{ offer.pricePeriod }}
+  </p>
+}
+
+<app-subscriber-form [submitLabel]="submitLabel()" (formSubmit)="formSubmit.emit($event)" />

@@ -8,133 +8,37 @@
 />
 
 @if (view() === SubscriptionViewEnum.FORM) {
-  <form app-form-container @slideOutLeft>
-    <app-autocomplete-form
-      name="activity"
-      label="Quelle est votre activité professionnelle ?"
-      [control]="form.controls.activity"
-      [options]="options()"
-      placeholder="Recherchez / Sélectionnez votre activité"
-      emptyActionLabel="Votre activité professionnelle n'est pas présente dans les offres souscriptibles en ligne, contactez-nous pour un devis personnalisé."
-      (queryChange)="query.set($event)"
-      (emptyAction)="requestAdvisor()"
-    />
-
-    @if (visibleStep() >= 2) {
-      <app-select-form
-        @slideIn
-        name="legalForm"
-        label="Quelle est la forme juridique de votre entreprise ?"
-        [control]="form.controls.legalForm"
-        [options]="legalFormOptions()"
-        placeholder="Sélectionnez la forme juridique"
-      />
-    }
-
-    @if (visibleStep() >= 3) {
-      <app-select-form
-        @slideIn
-        name="turnover"
-        label="Quel est votre chiffre d'affaires prévisionnel ?"
-        [control]="form.controls.turnover"
-        [options]="turnoverOptions()"
-        placeholder="Sélectionnez le chiffre d'affaires"
-      />
-    }
-
-    @if (visibleStep() >= 4) {
-      <app-select-form
-        @slideIn
-        name="location"
-        label="Où est situé le siège social de votre activité ?"
-        [control]="form.controls.location"
-        [options]="locationOptions()"
-        placeholder="Sélectionnez la localisation"
-      />
-    }
-
-    @if (canSeeOffers()) {
-      <button type="button" app-button @slideIn (click)="showOffers()">Voir les offres</button>
-    }
-  </form>
+  <app-eligibility-form
+    @slideOutLeft
+    [form]="form"
+    [activityOptions]="activityOptions()"
+    [legalFormOptions]="legalFormOptions()"
+    [turnoverOptions]="turnoverOptions()"
+    [locationOptions]="locationOptions()"
+    (queryChange)="query.set($event)"
+    (showOffers)="showOffers()"
+    (requestAdvisor)="requestAdvisor()"
+  />
 } @else if (view() === SubscriptionViewEnum.RESULTS) {
-  <div class="results-zone" @slideInRight>
-    @if (bestFitCards().length) {
-      <section class="results">
-        <h2 app-heading>Les meilleures offres</h2>
-        <div class="results__grid">
-          @for (card of bestFitCards(); track $index) {
-            <app-offer-card
-              [tagLabel]="card.tagLabel"
-              [recommended]="card.recommended"
-              [title]="card.title"
-              [lines]="card.lines"
-              [price]="card.price"
-              [priceLabel]="card.priceLabel"
-              [pricePeriod]="card.pricePeriod"
-              [ctaLabel]="card.ctaLabel"
-              (offerSelect)="onOfferSelect(card)"
-            />
-          }
-        </div>
-      </section>
-    }
-
-    @if (upsellCards().length) {
-      <section class="results">
-        <h2 app-heading>Anticipez votre réussite</h2>
-        <div class="results__grid">
-          @for (card of upsellCards(); track $index) {
-            <app-offer-card
-              [tagLabel]="card.tagLabel"
-              [recommended]="card.recommended"
-              [title]="card.title"
-              [lines]="card.lines"
-              [price]="card.price"
-              [priceLabel]="card.priceLabel"
-              [pricePeriod]="card.pricePeriod"
-              [ctaLabel]="card.ctaLabel"
-              (offerSelect)="onOfferSelect(card)"
-            />
-          }
-        </div>
-      </section>
-    }
-
-    @if (hasNoOffer()) {
-      <div class="results__empty">
-        <p>Aucune offre ne correspond à votre profil pour le moment.</p>
-        <button type="button" app-button (click)="requestAdvisor()">
-          Être contacté par un conseiller
-        </button>
-      </div>
-    }
-  </div>
+  <app-eligible-offers
+    @slideInRight
+    [bestFitCards]="bestFitCards()"
+    [upsellCards]="upsellCards()"
+    [hasNoOffer]="hasNoOffer()"
+    (offerSelect)="onOfferSelect($event)"
+    (requestAdvisor)="requestAdvisor()"
+  />
 } @else if (view() === SubscriptionViewEnum.SUBSCRIBER) {
-  <div class="subscriber" @slideInRight>
-    @if (intent() === SubscriptionIntentEnum.SUBSCRIPTION && selectedOffer(); as offer) {
-      <p class="subscriber__intro">
-        Offre sélectionnée : <strong>{{ offer.title }}</strong> — {{ offer.price | currency: 'EUR' }} {{ offer.pricePeriod }}
-      </p>
-    }
-
-    <app-subscriber-form
-      [submitLabel]="subscriberSubmitLabel()"
-      (formSubmit)="onSubscriberSubmit($event)"
-    />
-  </div>
+  <app-subscriber-step
+    @slideInRight
+    [submitLabel]="subscriberSubmitLabel()"
+    [offer]="subscriberOffer()"
+    (formSubmit)="onSubscriberSubmit($event)"
+  />
 } @else if (view() === SubscriptionViewEnum.DONE) {
-  <div class="done" @slideInRight>
-    @if (intent() === SubscriptionIntentEnum.ADVISOR) {
-      <p>Un conseiller vous recontactera dans les plus brefs délais.</p>
-    } @else {
-      @if (selectedOffer(); as offer) {
-        <p>
-          Dernière étape : le règlement de votre offre <strong>{{ offer.title }}</strong>
-          ({{ offer.price | currency: 'EUR' }} {{ offer.pricePeriod }}).
-        </p>
-      }
-      <p class="done__note">L'étape de paiement n'est pas implémentée dans cette démo.</p>
-    }
-  </div>
+  <app-confirmation-step
+    @slideInRight
+    [isAdvisor]="intent() === SubscriptionIntentEnum.ADVISOR"
+    [offer]="selectedOffer()"
+  />
 }

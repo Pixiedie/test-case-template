@@ -1,0 +1,11 @@
+@if (isAdvisor()) {
+  <p>Un conseiller vous recontactera dans les plus brefs délais.</p>
+} @else {
+  @if (offer(); as offer) {
+    <p>
+      Dernière étape : le règlement de votre offre <strong>{{ offer.title }}</strong>
+      ({{ offer.price | currency: 'EUR' }} {{ offer.pricePeriod }}).
+    </p>
+  }
+  <p class="confirmation-step__note">L'étape de paiement n'est pas implémentée dans cette démo.</p>
+}
