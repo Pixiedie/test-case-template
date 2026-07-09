@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+.step-counter {
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
