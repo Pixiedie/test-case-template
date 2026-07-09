@@ -43,20 +43,12 @@ export const getSubscriptionHeaderContent = (
             subtitle: 'Renseignez les informations nécessaires pour créer votre contrat.',
           };
     case SubscriptionViewEnum.DONE:
-      return intent === SubscriptionIntentEnum.ADVISOR
-        ? {
-            step: 4,
-            label: 'Confirmation',
-            title: 'Trouvons la solution adaptée à votre entreprise',
-            subtitle:
-              'Nos conseillers sont disponibles pour échanger avec vous et vous proposer une offre personnalisée.',
-          }
-        : {
-            step: 4,
-            label: 'Confirmation',
-            title: 'Paiement sécurisé',
-            subtitle:
-              'Vérifiez vos informations et confirmez votre paiement pour activer votre souscription.',
-          };
+      return {
+        step: 4,
+        label: 'Confirmation',
+        title: 'Merci pour votre confiance',
+        subtitle:
+          'Votre demande est entre de bonnes mains. Un conseiller vous contactera prochainement afin de finaliser votre souscription.',
+      };
   }
 };

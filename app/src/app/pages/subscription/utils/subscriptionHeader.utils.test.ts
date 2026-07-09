@@ -43,24 +43,19 @@ describe('src/app/pages/subscription/utils/subscriptionHeader.utils', () => {
       expect(content.title).toBe('Laissez-nous vos coordonnées');
     });
 
-    it('When the view is DONE with subscription intent then returns the payment title', () => {
-      const content = getSubscriptionHeaderContent(
+    it('When the view is DONE then returns the thank-you title whatever the intent', () => {
+      const subscription = getSubscriptionHeaderContent(
         SubscriptionViewEnum.DONE,
         SubscriptionIntentEnum.SUBSCRIPTION
       );
-
-      expect(content.step).toBe(4);
-      expect(content.title).toBe('Paiement sécurisé');
-    });
-
-    it('When the view is DONE with advisor intent then returns the advisor title', () => {
-      const content = getSubscriptionHeaderContent(
+      const advisor = getSubscriptionHeaderContent(
         SubscriptionViewEnum.DONE,
         SubscriptionIntentEnum.ADVISOR
       );
 
-      expect(content.step).toBe(4);
-      expect(content.title).toBe('Trouvons la solution adaptée à votre entreprise');
+      expect(subscription.step).toBe(4);
+      expect(subscription.title).toBe('Merci pour votre confiance');
+      expect(advisor).toEqual(subscription);
     });
   });
 });

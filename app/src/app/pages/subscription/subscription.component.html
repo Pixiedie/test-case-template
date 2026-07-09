@@ -36,9 +36,5 @@
     (formSubmit)="onSubscriberSubmit($event)"
   />
 } @else if (view() === SubscriptionViewEnum.DONE) {
-  <app-confirmation-step
-    @slideInRight
-    [isAdvisor]="intent() === SubscriptionIntentEnum.ADVISOR"
-    [offer]="selectedOffer()"
-  />
+  <app-confirmation-step @slideInRight [offer]="selectedOffer()" [subscriber]="subscriber()" />
 }

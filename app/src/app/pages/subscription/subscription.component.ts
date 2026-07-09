@@ -169,7 +169,6 @@ export class SubscriptionComponent {
   );
 
   protected readonly SubscriptionViewEnum = SubscriptionViewEnum;
-  protected readonly SubscriptionIntentEnum = SubscriptionIntentEnum;
 
   readonly view = signal<SubscriptionViewEnum>(SubscriptionViewEnum.FORM);
 
